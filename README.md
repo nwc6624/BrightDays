@@ -1,79 +1,113 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# BrightDays ☀️
 
-# Getting Started
+**BrightDays** is a weather application built using **React Native**. It fetches real-time weather data and displays temperature, humidity, and conditions without requiring an API key.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+---
 
-## Step 1: Start the Metro Server
+## Features 🌟
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- **Real-Time Weather Data**: Fetches weather information without requiring an API key.
+- **Responsive UI**: Clean and intuitive design optimized for both Android and iOS.
+- **Dynamic Theme**: Light and Dark themes based on system settings.
+- **Location Access**: Automatically retrieves the user's location for local weather updates.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+---
 
-```bash
-# using npm
-npm start
+## Screenshots 📸
 
-# OR using Yarn
-yarn start
-```
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Light Mode](assets/screenshots/light.png) | ![Dark Mode](assets/screenshots/dark.png) |
 
-## Step 2: Start your Application
+---
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Installation 🔧
 
-### For Android
+Follow these steps to get the app up and running:
 
-```bash
-# using npm
-npm run android
+### Prerequisites:
+- Node.js
+- React Native CLI
+- Xcode (for iOS) or Android Studio (for Android)
+- CocoaPods (for iOS)
 
-# OR using Yarn
-yarn android
-```
+### Setup:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nwc6624/BrightDays.git
+   cd BrightDays
+   ```
 
-### For iOS
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-# using npm
-npm run ios
+3. For iOS, install pods:
+   ```bash
+   cd ios
+   pod install
+   cd ..
+   ```
 
-# OR using Yarn
-yarn ios
-```
+4. Start the development server:
+   ```bash
+   npx react-native start
+   ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+5. Run the app:
+   - **iOS**:
+     ```bash
+     npx react-native run-ios
+     ```
+   - **Android**:
+     ```bash
+     npx react-native run-android
+     ```
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+---
 
-## Step 3: Modifying your App
+## Usage 🚀
 
-Now that you have successfully run the app, let's modify it.
+- Allow location permissions when prompted.
+- The app will display real-time weather for your current location.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+---
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+## Technologies 🛠️
 
-## Congratulations! :tada:
+- **React Native**
+- **JavaScript/TypeScript**
+- **Geolocation API**
+- **Metro Bundler**
 
-You've successfully run and modified your React Native App. :partying_face:
+---
 
-### Now what?
+## Contributing 🤝
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+Contributions are welcome! Here's how you can help:
+1. Fork the repository.
+2. Create a new branch: `git checkout -b feature-name`.
+3. Make your changes and commit them: `git commit -m "Add feature XYZ"`.
+4. Push your branch: `git push origin feature-name`.
+5. Open a Pull Request.
 
-# Troubleshooting
+---
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## License 📜
 
-# Learn More
+This project is licensed under the **MIT License**.
 
-To learn more about React Native, take a look at the following resources:
+---
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## Author 👨‍💻
+
+**Noah Caulfield**  
+- GitHub: [nwc6624](https://github.com/nwc6624)  
+- Email: [nocaulfield@gmail.com](mailto:nocaulfield@gmail.com)
+
+---
+
+## Acknowledgments 🌐
+
+Special thanks to the **React Native** and **OpenWeather** communities for their tools and support.
