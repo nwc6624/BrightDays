@@ -1,95 +1,97 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
+  ActivityIndicator,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+import Geolocation from '@react-native-community/geolocation';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [weatherData, setWeatherData] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // Function to fetch weather data
+  const fetchWeather = async (latitude: number, longitude: number) => {
+    try {
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`
+      );
+      const data = await response.json();
+      setWeatherData(data.current_weather);
+      setLoading(false);
+    } catch (error) {
+      setErrorMsg('Failed to fetch weather data.');
+      setLoading(false);
+    }
   };
 
+  // Get device location
+  const getLocation = async () => {
+    if (Platform.OS === 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
+      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+        setErrorMsg('Location permission denied');
+        setLoading(false);
+        return;
+      }
+    }
+
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        fetchWeather(latitude, longitude);
+      },
+      error => {
+        setErrorMsg('Error getting location.');
+        setLoading(false);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+    <SafeAreaView style={styles.backgroundStyle}>
+      <StatusBar barStyle="dark-content" />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+        style={styles.backgroundStyle}>
+        <View style={styles.sectionContainer}>
+          {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+          ) : errorMsg ? (
+            <Text style={styles.error}>{errorMsg}</Text>
+          ) : weatherData ? (
+            <>
+              <Text style={styles.sectionTitle}>Real-Time Weather</Text>
+              <Text style={styles.info}>
+                Temperature: {weatherData.temperature}°C
+              </Text>
+              <Text style={styles.info}>
+                Windspeed: {weatherData.windspeed} km/h
+              </Text>
+              <Text style={styles.info}>
+                Weather Code: {weatherData.weathercode}
+              </Text>
+            </>
+          ) : (
+            <Text style={styles.sectionDescription}>
+              Unable to fetch weather data.
+            </Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -97,21 +99,34 @@ function App(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  backgroundStyle: {
+    flex: 1,
+    backgroundColor: '#f0f8ff',
+  },
   sectionContainer: {
-    marginTop: 32,
+    marginTop: 50,
     paddingHorizontal: 24,
+    alignItems: 'center',
   },
   sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333',
+  },
+  info: {
+    fontSize: 18,
+    marginVertical: 5,
+    color: '#555',
   },
   sectionDescription: {
-    marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
+    textAlign: 'center',
+    color: '#777',
   },
-  highlight: {
-    fontWeight: '700',
+  error: {
+    fontSize: 18,
+    color: 'red',
   },
 });
 
